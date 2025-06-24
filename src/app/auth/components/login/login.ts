@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Auth } from '../../services/auth/services/auth';
 import { Router } from '@angular/router';
 import { SigninData } from '../../models/signin-data';
@@ -17,7 +17,7 @@ export class Login {
   password: string = '';
   showPassword: boolean = false;
 
-  constructor(private authService: Auth, private router: Router) {}
+  constructor(private authService: Auth, private router: Router, private cdr: ChangeDetectorRef) {}
 
   onSubmit() {
     const data: SigninData = { email: this.email, password: this.password };
@@ -32,8 +32,11 @@ export class Login {
     });
   }
 
-  togglePasswordVisibility() {
+  togglePasswordVisibility(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
     this.showPassword = !this.showPassword;
+    this.cdr.detectChanges();
   }
 
   navigateToSignup() {
