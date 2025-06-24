@@ -7,15 +7,18 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './signup.html',
-  styleUrl: './signup.css'
+  styleUrl: './signup.css',
+  standalone: true
 })
 export class Signup {
   name: string = '';
   email: string = '';
   password: string = '';
   phone: string = '';
+  agreeToTerms: boolean = false;
+  showPassword: boolean = false;
 
   constructor(private authService: Auth, private router: Router) {}
 
@@ -25,7 +28,7 @@ export class Signup {
       email: this.email,
       password: this.password,
       phone: this.phone,
-      profileImageUrl: null
+      profileImageUrl: null,
     };
     this.authService.signup(data).subscribe({
       next: () => {
@@ -33,7 +36,15 @@ export class Signup {
       },
       error: (error) => {
         alert('Signup failed: ' + error.message);
-      }
+      },
     });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
 }

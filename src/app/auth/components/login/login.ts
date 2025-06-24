@@ -7,15 +7,17 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrl: './login.css',
+  standalone: true
 })
 export class Login {
   email: string = '';
   password: string = '';
+  showPassword: boolean = false;
 
-  constructor(private authService: Auth, private router: Router){}
+  constructor(private authService: Auth, private router: Router) {}
 
   onSubmit() {
     const data: SigninData = { email: this.email, password: this.password };
@@ -26,7 +28,15 @@ export class Login {
       },
       error: (error) => {
         alert('Login failed: ' + error.message);
-      }
+      },
     });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  navigateToSignup() {
+    this.router.navigate(['/signup']);
   }
 }
