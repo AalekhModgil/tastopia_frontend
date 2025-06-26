@@ -1,13 +1,24 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth } from '../../services/auth/services/auth';
 import { SignupData } from '../../models/signup-data';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-signup',
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule
+  ],
   templateUrl: './signup.html',
   styleUrl: './signup.css',
   standalone: true
@@ -20,7 +31,7 @@ export class Signup {
   agreeToTerms: boolean = false;
   showPassword: boolean = false;
 
-  constructor(private authService: Auth, private router: Router, private cdr: ChangeDetectorRef) {}
+  constructor(private authService: Auth, private router: Router) {}
 
   onSubmit() {
     const data: SignupData = {
@@ -40,11 +51,12 @@ export class Signup {
     });
   }
 
-  togglePasswordVisibility(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
+  togglePasswordVisibility(event?: Event) {
     this.showPassword = !this.showPassword;
-    this.cdr.detectChanges();
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
   }
 
   navigateToLogin() {
