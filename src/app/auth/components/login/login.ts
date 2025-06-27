@@ -33,10 +33,7 @@ export class Login {
   constructor(private authService: Auth, private router: Router, private snackBar: MatSnackBar) {}
 
   onSubmit() {
-    if (!this.email || !this.password) {
-      this.snackBar.open('Email and password are required.', 'Close', { duration: 3000, panelClass: 'mat-warn', verticalPosition: 'top' });
-      return;
-    }
+    // No need to check for empty email/password, button is disabled until both are filled
     const data: SigninData = { email: this.email, password: this.password };
     this.authService.signin(data).subscribe({
       next: (response) => {

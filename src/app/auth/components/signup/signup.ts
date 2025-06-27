@@ -36,14 +36,6 @@ export class Signup {
   constructor(private authService: Auth, private router: Router, private snackBar: MatSnackBar) {}
 
   onSubmit() {
-    if (!this.name.trim() || !this.email.trim() || !this.password.trim() || !this.phone.trim()) {
-      this.snackBar.open('All fields are required.', 'Close', { duration: 3000, panelClass: 'mat-warn', verticalPosition: 'top' });
-      return;
-    }
-    if (!this.agreeToTerms) {
-      this.snackBar.open('You must agree to the Terms & Conditions.', 'Close', { duration: 3000, panelClass: 'mat-warn', verticalPosition: 'top' });
-      return;
-    }
     const data: SignupData = {
       name: this.name,
       email: this.email,
@@ -57,29 +49,27 @@ export class Signup {
         this.router.navigate(['/login']);
       },
       error: (error) => {
-        if (error?.error?.details) {
-          const emailTaken = error.error.details.email;
-          const phoneTaken = error.error.details.phone;
-          let message = '';
-          if (emailTaken && phoneTaken) {
-            message = 'Email and Phone number already taken';
-          } else if (emailTaken) {
-            message = emailTaken;
-          } else if (phoneTaken) {
-            message = phoneTaken;
-          }
-          if (message) {
-            this.snackBar.open(message, 'Close', { duration: 4000, panelClass: 'mat-warn', verticalPosition: 'top' });
-            return;
-          }
+        const emailTaken = error?.error?.details?.email;
+        const phoneTaken = error?.error?.details?.phone;
+        let message = '';
+        if (emailTaken && phoneTaken) {
+          message = 'Email and Phone number already taken';
+        } else if (emailTaken) {
+          message = emailTaken;
+        } else if (phoneTaken) {
+          message = phoneTaken;
         }
-        let message = 'Signup failed.';
+        if (message) {
+          this.snackBar.open(message, 'Close', { duration: 4000, panelClass: 'mat-warn', verticalPosition: 'top' });
+          return;
+        }
+        let fallback = 'Signup failed.';
         if (error?.error?.error) {
-          message = error.error.error;
+          fallback = error.error.error;
         } else if (error?.message) {
-          message = error.message;
+          fallback = error.message;
         }
-        this.snackBar.open(message, 'Close', { duration: 4000, panelClass: 'mat-warn', verticalPosition: 'top' });
+        this.snackBar.open(fallback, 'Close', { duration: 4000, panelClass: 'mat-warn', verticalPosition: 'top' });
       },
     });
   }

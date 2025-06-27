@@ -130,7 +130,8 @@
             type="submit"
             class="w-full"
             style="background-color: #ef4444; color: white;"
-            [disabled]="!agreeToTerms"
+            [disabled]="!name || !email || !phone || !password || !agreeToTerms"
+            [ngClass]="{ 'opacity-50 cursor-not-allowed': !name || !email || !phone || !password || !agreeToTerms }"
           >
             Sign Up
           </button>
