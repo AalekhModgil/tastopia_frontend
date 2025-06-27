@@ -1,2 +1,11 @@
 <h2>Dashboard</h2>
 <button (click)="signout()">Sign Out</button>
+<h3>Restaurants</h3>
+<ul>
+  <li *ngFor="let restaurant of restaurants">
+    <strong>{{ restaurant.name }}</strong> - {{ restaurant.cuisine }}<br />
+    {{ restaurant.address }}, {{ restaurant.city }}, {{ restaurant.state }}<br />
+    Contact: {{ restaurant.contactNumber }}<br />
+    Status: {{ restaurant.open ? 'Open' : 'Closed' }}
+  </li>
+</ul>
